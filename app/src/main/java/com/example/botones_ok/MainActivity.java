@@ -45,6 +45,9 @@ int contador=0;
         nombre= findViewById(R.id.nombre);
         edad= findViewById(R.id.edad);
         lista_profesiones= findViewById(R.id.lista_profesiones);
+
+
+
         nombre.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
                 if(actionID == EditorInfo.IME_ACTION_GO){
@@ -62,6 +65,8 @@ int contador=0;
 
 
         });
+
+
 
         edad.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
@@ -125,6 +130,7 @@ int contador=0;
                 if(isChecked){
                     resultado2+="Hobbie2"+"\n";
                 }
+
             }
         });
 
