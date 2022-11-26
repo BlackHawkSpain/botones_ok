@@ -2,6 +2,7 @@ package com.example.botones_ok;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
     TextView tit_nombre, tit_edad, sexo, tit_profesion, tit_hobbies, resultado;
     EditText nombre, edad;
@@ -27,9 +29,12 @@ public class MainActivity extends AppCompatActivity {
     Button boton_enviar, boton_limpiar;
     String resultado2="";
     String opcion = "";
-int contador=0;
+    int contador=0;
+
+    Persona persona = new Persona();
 
 
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,54 +48,63 @@ int contador=0;
         opcionMasculino = findViewById(R.id.opcionMasculino);
         resultado= findViewById(R.id.resultado);
         nombre= findViewById(R.id.nombre);
-        edad= findViewById(R.id.edad);
+        edad = findViewById(R.id.edadNumber);
         lista_profesiones= findViewById(R.id.lista_profesiones);
+        opcion1.setSelected(false);
+        opcion2.setSelected(false);
+        opcion3.setSelected(false);
+
+//        nombre.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
+//                if(actionID == EditorInfo.IME_ACTION_GO){
+//
+//                    resultado2=resultado2 +(nombre.getText()+"\n");
+//
+//                    InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(nombre.getWindowToken(), 0);
+//                    return true;
+//
+//                }
+//                return false;
+//
+//            }
+//
+//
+//
+//        });
 
 
 
-        nombre.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
-                if(actionID == EditorInfo.IME_ACTION_GO){
-                    resultado2=resultado2 +(nombre.getText()+"\n");
-
-                    InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(nombre.getWindowToken(), 0);
-                    return true;
-
-                }
-                return false;
-
-            }
-
-
-
-        });
-
-
-
-        edad.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
-                if(actionID == EditorInfo.IME_ACTION_GO){
-                    resultado2=resultado2 +(edad.getText()+"\n");
-
-                    InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(edad.getWindowToken(), 0);
-                    return true;
-
-                }
-                return false;
-
-            }
+//        edad.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            public boolean onEditorAction(TextView textview, int actionID, KeyEvent keyEvent){
+//                if(actionID == EditorInfo.IME_ACTION_GO){
+//                    resultado2=resultado2 +(edad.getText()+"\n");
+//
+//                    InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(edad.getWindowToken(), 0);
+//                    return true;
+//
+//                }
+//                return false;
+//
+//            }
+//
+//
+//
+//        });
 
 
 
-        });
 
         boton_enviar.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                // boton_enviar.setText(" Enviado ");
-                resultado.setText(resultado2);
+
+               // resultado2=resultado2 +(nombre.getText()+"\n");
+                persona.setEdad(edad.getText().toString());
+                persona.setNombre(nombre.getText().toString());
+                resultado.setText(persona.toString());
+
             }
         });
 
@@ -102,8 +116,13 @@ int contador=0;
                 resultado2="";
                 nombre.setText("");
                 edad.setText("");
-                opcion="";
-                valor="";
+                opcion1.setChecked(false);
+                opcion2.setChecked(false);
+                opcion3.setChecked(false);
+                opcionMasculino.setChecked(false);
+                opcionFemenino.setChecked(false);
+                lista_profesiones.setSelection(0);
+
             }
         });
 
@@ -116,7 +135,11 @@ int contador=0;
                 boolean isChecked = ((CheckBox)view).isChecked();
 
                 if(isChecked){
-                    resultado2+="Hobbie1"+"\n";
+                    persona.setOpcion1("Hobbie 1");
+                }
+                if(!isChecked){
+                    persona.setOpcion1(" ");
+
                 }
             }
         });
@@ -125,10 +148,15 @@ int contador=0;
         opcion2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 boolean isChecked = ((CheckBox)view).isChecked();
 
                 if(isChecked){
-                    resultado2+="Hobbie2"+"\n";
+                    persona.setOpcion2("Hobbie 2");
+                }
+                if(!isChecked){
+                    persona.setOpcion2(" ");
+
                 }
 
             }
@@ -141,8 +169,13 @@ int contador=0;
                 boolean isChecked = ((CheckBox)view).isChecked();
 
                 if(isChecked){
-                    resultado2+="Hobbie3"+"\n";
+                    persona.setOpcion3("Hobbie 3");
                 }
+                if(!isChecked){
+                    persona.setOpcion3(" ");
+
+                }
+
             }
         });
 
@@ -158,7 +191,7 @@ int contador=0;
                         opcion = "Masculino";
                         break;
                 }
-                resultado2+=opcion+"\n";
+                persona.setOpcionSexo(opcion);
 
             }
         };
@@ -174,7 +207,7 @@ int contador=0;
                 valor = lista_profesiones.getSelectedItem().toString();
                 Log.i("LISTA", valor);
                 if (contador>=2)
-                resultado2+= valor+ "\n";
+                persona.setEmpleo(valor);
             }
 
             @Override
